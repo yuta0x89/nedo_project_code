@@ -13,7 +13,7 @@ set -ex
 # This example script is contributed by external user https://github.com/nrailgun
 
 # Change the below configurations here
-ucllm_nedo_dev_train_dir="/storage2/ucllm_nedo_prod/train"
+ucllm_nedo_dev_train_dir="/storage2/nedo_project_code/team_kawagoshi"
 megatron_deepspeed_dir="${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed"
 echo "ucllm_nedo_dev_train_dir = ${ucllm_nedo_dev_train_dir}"
 echo "megatron_deepspeed_dir = ${megatron_deepspeed_dir}"
@@ -22,7 +22,7 @@ echo ""
 # save_interval=1000
 save_interval=200
 
-output_model_dir="/storage2/output/3node"
+output_model_dir="/storage2/nedo_project_code/team_kawagoshi/pipeline/step4_pretrain_model/output"
 # Modifies the arguments.
 output_model_dir="${output_model_dir%/}"  # Removes a trailing slash "/" if it exists.
 

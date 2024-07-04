@@ -5,7 +5,7 @@ echo ""
 
 # Stores the directory paths as variables.
 # ucllm_nedo_dev_train_dir="${HOME}/ucllm_nedo_dev/train"
-ucllm_nedo_dev_train_dir="/storage2/ucllm_nedo_prod/train"
+ucllm_nedo_dev_train_dir="~/nedo_project_code/team_kawagoshi"
 megatron_deepspeed_dir="${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed"
 llm_jp_tokeninzer_dir="${ucllm_nedo_dev_train_dir}/llm-jp-tokenizer"
 echo "ucllm_nedo_dev_train_dir = ${ucllm_nedo_dev_train_dir}"
@@ -69,11 +69,11 @@ python ${megatron_deepspeed_dir}/tools/convert_checkpoint/deepspeed_to_megatron.
     --target_pp ${target_pp} \
     --target_tp ${target_tp}
 
-python ${ucllm_nedo_dev_train_dir}/scripts/step3_upload_pretrained_model/llama_checkpoint_conversion.py \
+python ${ucllm_nedo_dev_train_dir}/pipeline/step5_upload_pretrained_model/llama_checkpoint_conversion.py\
     --convert_checkpoint_from_megatron_to_transformers \
     --save_path ${output_tokenizer_and_model_dir} \
     --print-checkpoint-structure \
-    --megatron-path ${ucllm_nedo_dev_train_dir}/train/Megatron-DeepSpeed/megatron/ \
+    --megatron-path ${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed/megatron/ \
     --load_path ${temp_model_dir}   \
     --model_name ${model_name}
    

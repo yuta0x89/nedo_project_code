@@ -1,0 +1,22 @@
+{
+  "train_batch_size" : 1960,
+  "train_micro_batch_size_per_gpu": 2,
+  "steps_per_print": 1,
+  "zero_optimization": {
+    "stage": 1
+  },
+  "bf16": {
+    "enabled": true
+  },
+  "data_types": {
+    "grad_accum_dtype": "fp32" 
+  },  
+  "wandb": {
+    "enabled": true,    
+    "project": "Llama3_3node",
+    "group": "test"
+  },
+  "gradient_clipping": 1,
+  "prescale_gradients": false,
+  "wall_clock_breakdown": false
+}

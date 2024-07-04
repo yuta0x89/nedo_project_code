@@ -5,7 +5,7 @@ echo ""
 
 # Stores the directory paths as variables.
 # ucllm_nedo_dev_train_dir="${HOME}/ucllm_nedo_dev/train"
-ucllm_nedo_dev_train_dir="/storage2/ucllm_nedo_prod/train"
+ucllm_nedo_dev_train_dir="~/nedo_project_code/team_kawagoshi"
 megatron_deepspeed_dir="${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed"
 echo "ucllm_nedo_dev_train_dir = ${ucllm_nedo_dev_train_dir}"
 echo "megatron_deepspeed_dir = ${megatron_deepspeed_dir}"
@@ -58,7 +58,7 @@ mkdir -p ${output_tokenizer_and_model_dir}
 mkdir -p ${temp_model_dir}
 
 # Converts the tokenizer from SentencePiece format to HuggingFace Transformers format.
-python ${ucllm_nedo_dev_train_dir}/scripts/step3_upload_pretrained_model/convert_tokenizer_from_sentencepiece_to_huggingface_transformers.py \
+python ${ucllm_nedo_dev_train_dir}/pipeline/step5_upload_pretrained_model/convert_tokenizer_from_sentencepiece_to_huggingface_transformers.py \
     --input_tokenizer_file ${input_tokenizer_file} \
     --output_tokenizer_dir ${output_tokenizer_and_model_dir} \
     --tokenizer_type LlamaTokenizer
@@ -70,7 +70,7 @@ python ${megatron_deepspeed_dir}/tools/convert_checkpoint/deepspeed_to_megatron.
     --target_pp ${target_pp} \
     --target_tp ${target_tp}
 
-python ${ucllm_nedo_dev_train_dir}/scripts/step3_upload_pretrained_model/llama_checkpoint_conversion.py \
+python ${ucllm_nedo_dev_train_dir}/pipeline/step5_upload_pretrained_model/llama_checkpoint_conversion.py \
     --convert_checkpoint_from_megatron_to_transformers \
     --save_path ${output_tokenizer_and_model_dir} \
     --print-checkpoint-structure \
