@@ -406,15 +406,15 @@ model_name
 
 
 ```sh
-(.venv) $ cd ~/ucllm_nedo_dev/train/scripts/step4_finetune_model/
+(.venv) $ cd ~/nedo_project_code/team_kawagoshi/pipeline/step6_finetune_model/sft
 
 # ファインチューニングスクリプトを実行。 (HuggingFaceにアップロードした事前学習モデルをダウンロードして使用する場合)
-(.venv) $ bash ./pre_dev/train_ja_1node.sh --input_model_name_or_path ${YOUR_HUGGINGFACE_USEandMODELRNAME} \
-    --output_dir ~/ucllm_nedo_dev/train/output/step4_finetune_model/gpt_0.125B_global_step1000_openassistant/
+(.venv) $ bash ./train_ja_1node.sh --input_model_name_or_path ${YOUR_HUGGINGFACE_USEandMODELRNAME} \
+    --output_dir ../output
 
 # ファインチューニングスクリプトを実行。 (ローカルに保存してある事前学習モデルをそのまま使用する場合)
-(.venv) $ bash ./pre_dev/train_ja_1node.sh --input_model_name_or_path ~/ucllm_nedo_dev/train/output/step3_upload_pretrained_model/gpt_0.125B_global_step1000/ \
-    --output_dir ~/ucllm_nedo_dev/train/output/step4_finetune_model/gpt_0.125B_global_step1000_openassistant/
+(.venv) $ bash ./train_ja_1node.sh --input_model_name_or_path ~/nedo_project_code/team_kawagoshi/pipeline/step5_upload_pretrained_model/output/gpt_0.125B_global_step100 \
+    --output_dir ../output
 ```
 
 ## Step 5. ファインチューニング済みモデルのアップロード
@@ -422,14 +422,49 @@ model_name
 ### Step 5-1. トークナイザーとファインチューニング済みモデルのHuggingFace Hubへのアップロード
 
 ```sh
-(.venv) $ cd ~/ucllm_nedo_dev/train/scripts/step5_upload_finetuned_model/
+(.venv) $ cd ~/nedo_project_code/team_kawagoshi/pipeline/step7_upload_finetuned_model
 
 # HuggingFaceにログインしていることを確認。
 (.venv) $ huggingface-cli whoami
 
 # アップロードスクリプトを実行。
 (.venv) $ python ./upload_tokenizer_and_finetuned_model_to_huggingface_hub.py \
-    --input_tokenizer_and_model_dir ~/ucllm_nedo_dev/train/output/ \
+    --input_tokenizer_and_model_dir ~/nedo_project_code/team_kawagoshi/pipeline/step6_finetune_model/output \
+    --output_model_name gpt_0.125B_global_step1000_openassistant \
+    --test_prompt_text "<s>[INST] <<SYS>>\nあなたは日本語で返答する優秀なAIアシスタントです。\n<</SYS>>\n\n apple watchでできることリストを教えてください。[/INST]"
+```
+
+## Step 6. モデルのポストトレーニング
+
+### Step 6-1. ポストトレーニングの実行
+#使用するデータセットの追加が必要。
+
+
+```sh
+(.venv) $ cd ~/nedo_project_code/team_kawagoshi/pipeline/step8_posttrain_model/dpo
+
+# ポストトレーニングスクリプトを実行。 (HuggingFaceにアップロードした事前学習モデルをダウンロードして使用する場合)
+(.venv) $ bash ./train_ja_1node.sh --input_model_name_or_path ${YOUR_HUGGINGFACE_USEandMODELRNAME} \
+    --output_dir ../output
+
+# ポストトレーニングスクリプトを実行。 (ローカルに保存してある事前学習モデルをそのまま使用する場合)
+(.venv) $ bash ./train_ja_1node.sh --input_model_name_or_path ~/nedo_project_code/team_kawagoshi/pipeline/step5_upload_pretrained_model/output/gpt_0.125B_global_step100 \
+    --output_dir ../output
+```
+
+## Step 7. ポストトレーニング済みモデルのアップロード
+
+### Step 5-1. トークナイザーとポストトレーニング済みモデルのHuggingFace Hubへのアップロード
+
+```sh
+(.venv) $ cd ~/nedo_project_code/team_kawagoshi/pipeline/step9_upload_posttrained_model
+
+# HuggingFaceにログインしていることを確認。
+(.venv) $ huggingface-cli whoami
+
+# アップロードスクリプトを実行。
+(.venv) $ python ./upload_tokenizer_and_finetuned_model_to_huggingface_hub.py \
+    --input_tokenizer_and_model_dir ~/nedo_project_code/team_kawagoshi/pipeline/step8_posttrain_model/output \
     --output_model_name gpt_0.125B_global_step1000_openassistant \
     --test_prompt_text "<s>[INST] <<SYS>>\nあなたは日本語で返答する優秀なAIアシスタントです。\n<</SYS>>\n\n apple watchでできることリストを教えてください。[/INST]"
 ```
