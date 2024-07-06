@@ -4,7 +4,7 @@ set -e
 echo ""
 
 # Change the below configurations here
-ucllm_nedo_dev_train_dir="/storage2/ucllm_nedo_prod/train"
+ucllm_nedo_dev_train_dir="/storage2/nedo_project_code/team_kawagoshi"
 megatron_deepspeed_dir="${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed"
 
 echo "ucllm_nedo_dev_train_dir = ${ucllm_nedo_dev_train_dir}"
@@ -65,7 +65,7 @@ echo ""
 export CUDA_LAUNCH_BLOCKING=1
 
 deepspeed --master_port ${master_port} --hostfile ${hostfile} \
-    ${ucllm_nedo_dev_train_dir}/llm-jp-sft/train_ja.py \
+    ${ucllm_nedo_dev_train_dir}/llm-jp-sft/train.py \
     --num_train_epochs 3 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
