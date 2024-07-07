@@ -1,6 +1,5 @@
 ## 重複削除
 
-# readme
 deduplicationのc++実装
 
 参考
@@ -47,7 +46,3 @@ main.cpp 31行目の下記コードを、変更することで重複削除の精
     Hasher hasher(10, 4, 2, 2);
 ```
 左から順に、N-GRAM, N_BUCKET*BUCKET_SIZE, N_BUCKET, BUCKET_SIZEとなっている。
-
-# Lisence
-
-This project is licensed under the MIT License, see the LICENSE.txt file for details
