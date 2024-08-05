@@ -1,4 +1,4 @@
-#ライセンス付与は東大松尾研運営サイドにお任せいたします。
+ライセンスはMITとなります(一部､他のレポジトリからcloneしたコードが含まれるフォルダが存在します｡そのフォルダ内のライセンスは､元のライセンスに従います)｡
 
 -------
 This repository also contains code from NVIDIA, Hugging Face Inc., Google Research,
