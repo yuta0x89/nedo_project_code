@@ -1,3 +1,4 @@
+#実行コマンドのメモです
 
 sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/0719cleaned_tp1-pp4-ct1-LR5.0E-5-MINLR0.5E-5-WD0.1-WARMUP500-nnodes16 6400
 
