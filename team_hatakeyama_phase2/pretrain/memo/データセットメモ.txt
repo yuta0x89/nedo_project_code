@@ -1,0 +1,36 @@
+
+#ファイル統合
+cd /storage5/shared/corpus/cleaning_codes/Dataset_for_BTM/01web_codes/
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 --time=30-00:00:00 -c 1 3_combine_files.sh
+
+# clean and clustering 
+バッチ
+cd /storage5/shared/corpus/cleaning_codes/Dataset_for_BTM/01web_codes
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 --time=06:00:00 -c 80 3_clean_and_clustrering.sh 80
+sbatch --nodelist=slurm0-a3-ghpc-[1] --gpus-per-node=0 --time=06:00:00 -c 80 3_clean_and_clustrering.sh 80
+sbatch --nodelist=slurm0-a3-ghpc-[19] --gpus-per-node=0 --time=1-00:00:00 -c 128 3_clean_and_clustrering.sh 128
+sbatch --nodelist=slurm0-a3-ghpc-[20] --gpus-per-node=0 --time=1-00:00:00 -c 128 3_clean_and_clustrering.sh 128
+
+#interactive
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 -c 200 --pty bash -i 
+conda activate textprocess
+cd /storage5/shared/corpus/cleaning_codes/Dataset_for_BTM/01web_codes
+python 3_clean_and_clustering.py 200
+python 3_clean_and_clustering.py 100
+python 3_clean_and_clustering.py 64
+
+
+#メンテ
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 -c 8 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[20] --gpus-per-node=0 -c 4 --pty bash -i 
+
+#一時ファイルは定期的に消す
+find /var/tmp -maxdepth 1 -user ext_kan_hatakeyama_s_gmail_com -print0 | xargs -0 rm -rf
+
+#dedup
+#srun --nodelist=slurm0-a3-ghpc-[20] --gpus-per-node=0 -c 200 --pty bash -i 
+find /var/tmp -maxdepth 1 -user ext_kan_hatakeyama_s_gmail_com -print0 | xargs -0 rm -rf
+cd /storage5/shared/corpus/cleaning_codes/Dataset_for_BTM/01web_codes/
+#bash 4_dedup_docker.sh
+sbatch --nodelist=slurm0-a3-ghpc-[20] --gpus-per-node=0 --time=30-00:00:00 -c 200 4_dedup.sh
+

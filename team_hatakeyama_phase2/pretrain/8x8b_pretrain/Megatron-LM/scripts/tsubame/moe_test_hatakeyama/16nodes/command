@@ -1,0 +1,48 @@
+
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=8 --time=30-00:00:00 -c 200 --mem=100GB --pty bash -i
+
+cd /storage5/Megatron-LM/scripts/tsubame/moe_test_hatakeyama/16nodes
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x8b.sh
+
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x11b.sh
+
+#8x8xの動作検証
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_8x8b_test.sh
+
+#8x8 checkpointからの読み込み pp=16
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_8x8b.sh
+
+#7/12 phase1のコーパスで再開
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0712_tanuki-8x8b_2nd_tonyu.sh
+
+#7/13 コーパス変更
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0713_tanuki-8x8b_3rd_tonyu_llmjpcorpus_tsunagi.sh
+
+#7/17コーパス変更
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0715_tanuki-8x8b_4th_tonyu_llmjpcorpus_tsunagi.sh
+
+#7/20コーパス変更
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0720tanuki8x8b_5th_clean_texts.sh
+
+#change node
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0722tanuki8x8b_5th_clean_texts_change_node.sh
+
+#7/25 6th tonyu. best fit pack. ネット系テキスト+cosmo
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0724tanuki8x8b_6th_with_packing.sh
+#node変更
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0724tanuki8x8b_6th_with_packing.sh
+
+#7/30 速度最適化
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0730tanuki8x8b_7th_with_packing_seq_test.sh
+
+#7/30 4k with packing 7th tonyu
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0730tanuki8x8b_7th_with_packing_4k.sh
+
+#8/1 4k with pack 8th tonyu
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0801tanuki8x8b_8th_4k_pack.sh
+
+#8/2 w pack 9th tonyu
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0801tanuki8x8b_9th_4k_pack.sh
+
+#8/3 with pack tonyu
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0806tanuki8x8b_10th_4k_pack.sh

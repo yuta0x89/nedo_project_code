@@ -1,0 +1,3 @@
+
+#python
+ python parquet_to_jsonl.py --input_path ../from_huggingface/Sansu/ --out_dir jsonl/sansu --do_clean false --column_name answer

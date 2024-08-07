@@ -1,0 +1,47 @@
+#######################################
+#メインコマンド
+6/4メインプロセスの実行　
+cd /storage5/llm/codes/2_pretrain/
+sbatch --nodelist=slurm0-a3-ghpc-[3-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama.sh
+
+#困ったときのコマンド
+ゾンビの一括kill(node 3-20)
+cd /storage5/llm/codes/2_pretrain/
+sbatch --nodelist=slurm0-a3-ghpc-[3] --gpus-per-node=0 --time=30-00:00:00 -c 1 pkill_python_node_3-20.sh
+
+
+#メンテのためのインタラクティブモード
+srun --nodelist=slurm0-a3-ghpc-[3-20] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[3] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 -c 8 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 -c 1 --pty bash -i 
+
+#gpu interactive
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=8 -c 8 --pty bash -i 
+
+srun --nodelist=slurm0-a3-ghpc-[3,5] --gpus-per-node=8 -c 128 --pty bash -i 
+
+###################################
+その他メモ
+#ft
+cd EvalPractice/3_finetune/
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=8 --time=30-00:00:00 -c 200 run.sh 0524ft_run.py data/0603only_sansu 0603only_sansu
+sbatch --nodelist=slurm0-a3-ghpc-[1] --gpus-per-node=8 --time=30-00:00:00 -c 200 run.sh 0524ft_run.py data/0602with_halcination_math 0602with_halcination_math
+
+#ftの再開
+cd EvalPractice/3_finetune/
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=8 --time=30-00:00:00 -c 200 run.sh 0524ft_run_resume.py data/0603only_sansu 0603only_sansu
+
+
+#ft中のファイルエラーが発生したときの対応 (ファイル多すぎエラー)
+計算ノードに入った状態でキャッシュを消去する必要がありました。
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=8 -c 8 --pty bash -i 
+ll /var/tmp  #ファイル確認
+
+#ファイル削除
+find /var/tmp -maxdepth 1 -user ext_kan_hatakeyama_s_gmail_com -print0 | xargs -0 rm -rf
+
+
+#backup
+
+cp -rf /storage5/shared/Llama-3-35/Llama-3-35b-16nodes-tp4-pp4-ct1-LR1.0E-4-MINLR0.99E-4-WD0.1-WARMUP1000/iter_0011000 /storage5/backup/scripts/llama38b
