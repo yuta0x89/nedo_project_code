@@ -1,0 +1,10 @@
+base_model: /storage5/shared/Llama-3-8/HF/cont_0111000
+gate_mode: random
+dtype: bfloat16
+experts:
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0111000
+    positive_prompts:
+      - hello
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0111000
+    positive_prompts:
+      - hello
