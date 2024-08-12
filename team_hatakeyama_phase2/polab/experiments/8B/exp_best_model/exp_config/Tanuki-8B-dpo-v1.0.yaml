@@ -1,0 +1,60 @@
+template:
+  system: 以下は、タスクを説明する指示です。要求を適切に満たす応答を書きなさい。
+  instruction: \n\n### 指示:\n
+  input: \n\n### 入力:\n
+  output: \n\n### 応答:\n
+
+data:
+  - name: team-hatakeyama-phase2/aya-ja-evol-instruct-calm3-dpo
+    preprocess:
+      - name: preprocess_openai_messages
+        args:
+          messages: prompt
+          chosen: chosen
+          rejected: rejected
+          add_eos: true
+      - name: add_bos
+    split:
+      train: train[:-1000]
+      eval: train[-1000:]
+
+model:
+  name: team-hatakeyama-phase2/Tanuki-8B-sft-v1.0
+
+tokenizer:
+  name: null
+
+exp_params:
+  num_train_epochs: 1
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 64
+  #dataloader_num_workers: 24
+  save_strategy: epoch
+  save_steps: 1000
+  logging_steps: 1
+  learning_rate: 5e-7
+  warmup_ratio: 0.1
+  lr_scheduler_type: cosine
+  weight_decay: 0.0
+  optim: adamw_torch
+  dtype: bf16
+  use_fast: true
+  gradient_checkpointing: false
+  max_length: 1150
+  max_prompt_length: 925
+  loss_type: sigmoid # loss for DPO
+  beta: 0.01
+  use_peft: false
+  peft_target_model: llama-mini
+  use_flash_attention_2: true
+  peft_lora_r: 128
+  peft_lora_alpha: 256
+  peft_lora_dropout: 0.05
+  ropo_alpha: 0.2 #weight of ropo loss for ROPO.
+  ropo_gamma: 0.1 #weight of dpo loss for ROPO.
+  rpo_alpha: null # weight of sft loss for rpo.
+  
+  do_eval: true
+  eval_strategy: steps
+  eval_steps: 50

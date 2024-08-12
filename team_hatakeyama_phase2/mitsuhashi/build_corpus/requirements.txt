@@ -1,0 +1,10 @@
+tqdm==4.66.4
+datasets==2.20.0
+transformers==4.42.3
+torch==2.1.2
+numpy==1.26.2
+vllm==0.5.4
+pandas==2.2.2
+huggingface_hub==0.24.5
+nano_askllm==0.2.3
+openai==0.28.0
