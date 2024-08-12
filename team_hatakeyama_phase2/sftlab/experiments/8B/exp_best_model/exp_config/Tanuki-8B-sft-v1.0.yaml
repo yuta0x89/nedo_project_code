@@ -53,7 +53,7 @@ data:
       eval: train[-2000:-1000]
 
 model:
-  name: team-hatakeyama-phase2/tanuki-8B-base-v0.1
+  name: team-hatakeyama-phase2/Tanuki-8x8B-base-v1.0
 
 tokenizer:
   name: null
