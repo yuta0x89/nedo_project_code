@@ -11,11 +11,8 @@ sftlab
 ├── README.md
 ├── base_config   各実験で共通する設定を記載するconfigを格納する
 ├── experiments　　　　　　実験用コードを格納する
-├── llm-jp-sft    学習コードの元となったコードが格納されている(requirement.in以外は必要なくなっているので削除予定)
 ├── playground    experimentsに含めない実験コードを格納する(wandbのprojectは分離され、コードもgitignoreされるので自由に使って良い)
-├── scripts　　　　　　　　　　　　　　学習データ作成用コードが格納されている(学習コードに統合されているので削除予定)
-├── template　　　　　　　　　　　　実験用コードのテンプレートが格納されている
-└── test　　　　　　　　　　　　　　　　　　　　開発時に使用したコードが格納されている
+└── template　　　　　　　　　　　　実験用コードのテンプレートが格納されている
 ```
 実験用コードは基本的に以下の構成に従って作ります。
 ```
