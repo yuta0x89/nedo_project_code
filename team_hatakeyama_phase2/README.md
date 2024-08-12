@@ -7,6 +7,12 @@
     - 事前学習(8b, 8x8b)
     - データ合成
 
+## [sftlab](sftlab)
+- 事後学習(SFT)(8b, 8x8b)
+  
+## [polab](polab)
+- 事後学習(DPO)(8b, 8x8b)
+
 ## [ota](ota)
 - データ合成
   - [Iterative DPO, LLM-as-a-Judge](ota/iterative-dpo)
