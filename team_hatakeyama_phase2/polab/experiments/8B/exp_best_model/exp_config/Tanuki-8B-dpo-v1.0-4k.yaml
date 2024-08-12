@@ -19,7 +19,7 @@ data:
       eval: train[-1000:]
 
 model:
-  name: /storage5/personal/shioya/sft_model/sftlab-experiments/8B/pass4_exp001-4k_0809_exp_01-zero1
+  name: team-hatakeyama-phase2/Tanuki-8B-sft-v1.0-4k
 
 tokenizer:
   name: null
