@@ -46,5 +46,10 @@
   - [vLLM FP8 量子化](ota/nemotron-vllm-fp8)
   - [Megatron](ota/nemotron-megatron)
 
+## [Pre Training Data](pre_training_data)
+- 事前学習データを取得するためのコード、フィルタなどを格納しています
+  - ndlj
+    - 国会図書館デジタルコレクションから著作権切れのデータを取得するコード
+
 # ライセンス
 - ライセンスはMITとなります(一部､他のレポジトリからcloneしたコードが含まれるフォルダが存在します｡そのフォルダ内のライセンスは､元のライセンスに従います)｡
