@@ -53,7 +53,7 @@ data:
       eval: train[-2000:-1000]
 
 model:
-  name: /storage5/shared/Llama-3-8/HF/0809inst_iter_0000200
+  name: team-hatakeyama-phase2/tanuki-8x8B-base-v0.1
 
 tokenizer:
   name: null
