@@ -53,5 +53,12 @@
   - ndlj
     - 国会図書館デジタルコレクションから著作権切れのデータを取得するコード
 
+## [arata](arata)
+- vLLMを用いたデータ合成用の簡易スクリプト群
+  - Magpieによるinstructionの作成
+  - Evol-Instructによるinstructionの作成
+    - [Hajime-Y/Evol-Instruct-jp](https://github.com/Hajime-Y/Evol-Instruct-jp)のプロンプトを参考に作成
+  - バッチ推論による応答の作成
+
 # ライセンス
 - ライセンスはMITとなります(一部､他のレポジトリからcloneしたコードが含まれるフォルダが存在します｡そのフォルダ内のライセンスは､元のライセンスに従います)｡
