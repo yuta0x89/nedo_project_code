@@ -6,6 +6,8 @@
 ## [hatakeyama](hatakeyama)
     - 事前学習(8b, 8x8b)
     - データ合成
+    - [technical data](./technical_data.xlsx)
+      - 学習に用いたコーパス一覧､ハイパーパラメータの最適化､シェルスクリプトの一覧など
 
 ## [sftlab](sftlab)
 - 事後学習(SFT)(8b, 8x8b)
