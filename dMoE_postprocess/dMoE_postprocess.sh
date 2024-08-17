@@ -21,6 +21,7 @@ training_type="pretrain"
 data_type="pretrain_0520"
 epoch=0
 iter=134999
+hg_org_name="geniacllm"
 
 #
 ###### automatic setting #####
@@ -94,6 +95,7 @@ python upload/upload_tokenizer_and_model_to_huggingface_hub.py \
 	--output_model_name ${model_name} \
 	--test_prompt_text ${test_prompt} \
 	--use_orgs \
+	--org_name ${hg_org_name} \
 	#--no_upload
 upload_time=`date +%s`
 echo "--------------------"
