@@ -12,6 +12,8 @@ def parse_arguments():
     parser.add_argument("--test_prompt_text", type=str, default="Once upon a time,")
     #ユーザではなく、組織のリポジトリにアップロード
     parser.add_argument("--use_orgs", action='store_true')
+    #組織のリポジトリ名を指定した場合は、その組織のリポジトリにアップロード
+    parser.add_argument("--org_name", type=str, default="")
     #推論のみを実行し、ULは実施しない
     parser.add_argument("--no_upload", action='store_true')
     args = parser.parse_args()
@@ -53,6 +55,9 @@ def main() -> None:
 
     if not args.no_upload:
         huggingface_workname =  HfApi().whoami()["orgs"][0]["name"] if args.use_orgs else HfApi().whoami()["name"]
+        if args.use_orgs and args.org_name != "":
+            # Force to use the specified organization
+            huggingface_workname = args.org_name
         repository_name = os.path.join(huggingface_workname, args.output_model_name)
 
         # Uploads the local tokenizer and the local model to HuggingFace Hub.
