@@ -1,0 +1,61 @@
+#実行コマンドのメモです
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/0719cleaned_tp1-pp4-ct1-LR5.0E-5-MINLR0.5E-5-WD0.1-WARMUP500-nnodes16 6400
+
+
+cd /storage5/shared/hatakeyama/post_training
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh \
+/storage5/shared/Llama-3-8/tp1-pp4-ct1-LR1.5E-4-MINLR1.5E-5-WD0.1-WARMUP1000-nnodes16 \
+126000
+
+
+
+cd /storage5/shared/hatakeyama/post_training
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 -c 8 --pty bash -i 
+source /storage5/shared/jk/miniconda3/etc/profile.d/conda.sh
+conda activate share-jk_py310_TEv1.7_FAv2.5.7
+python play_model.py
+
+
+
+#upload
+#1.5e-4
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR1.5E-4-MINLR1.5E-5-WD0.1-WARMUP1000-nnodes16 123000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR1.5E-4-MINLR1.5E-5-WD0.1-WARMUP1000-nnodes16 114000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR1.5E-4-MINLR1.5E-5-WD0.1-WARMUP1000-nnodes16 102000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR1.5E-4-MINLR1.5E-5-WD0.1-WARMUP1000-nnodes16 93000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR1.5E-4-MINLR1.5E-5-WD0.1-WARMUP1000-nnodes16 72000
+
+#8e-5
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR8E-5-MINLR2.0E-5-WD0.1-WARMUP1000-nnodes16 48000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR8E-5-MINLR2.0E-5-WD0.1-WARMUP1000-nnodes16 60000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR8E-5-MINLR2.0E-5-WD0.1-WARMUP1000-nnodes16 69000
+
+#4e-5
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp2-ct1-LR4E-5-MINLR1.0E-6-WD0.1-WARMUP1000-nnodes16 8000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp2-ct1-LR4E-5-MINLR1.0E-6-WD0.1-WARMUP1000-nnodes16 24000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto.sh /storage5/shared/Llama-3-8/tp1-pp2-ct1-LR4E-5-MINLR1.0E-6-WD0.1-WARMUP1000-nnodes16 40500
+
+
+#3e-4
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto3e.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR3E-4-MINLR3E-5-WD0.1-WARMUP1000-nnodes16 87000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto3e.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR3E-4-MINLR3E-5-WD0.1-WARMUP1000-nnodes16 99000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto3e.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR3E-4-MINLR3E-5-WD0.1-WARMUP1000-nnodes16 117000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto3e.sh /storage5/shared/Llama-3-8/tp1-pp4-ct1-LR3E-4-MINLR3E-5-WD0.1-WARMUP1000-nnodes16 120000
+
+#38b
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=200GB -c 8 megatron_to_hf_38b.sh /storage5/shared/Llama-3-35/Llama-3-35b-16nodes_2nd_tonyu-tp4-pp4-ct1-LR2E-5-MINLR1.99E-5-WD0.1-WARMUP8000 3000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=200GB -c 8 megatron_to_hf_38b.sh /storage5/shared/Llama-3-35/Llama-3-35b-16nodes_2nd_tonyu-tp4-pp4-ct1-LR2E-6-MINLR1.99E-6-WD0.1-WARMUP2000 14500
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=200GB -c 8 megatron_to_hf_38b.sh /storage5/shared/Llama-3-35/Llama-3-35b-16nodes-tp1-pp32-ct1-LR1.0E-4-MINLR0.99E-4-WD0.1-WARMUP1000 25000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=200GB -c 8 megatron_to_hf_38b.sh /storage5/shared/Llama-3-35/Llama-3-35b-16nodes-tp4-pp4-ct1-LR0.5E-4-MINLR0.499E-4-WD0.1-WARMUP8000 17000
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=200GB -c 8 megatron_to_hf_38b.sh /storage5/shared/Llama-3-35/Llama-3-35b-16nodes-tp4-pp4-ct1-LR1.0E-4-MINLR0.99E-4-WD0.1-WARMUP1000 15000
+
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_38b_.sh
+
+
+
+#ft
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=02:00:00 --mem=100GB -c 8 megatron_to_hf_8b_auto_ft.sh /storage5/shared/Llama-3-8/cleaned_tp1-pp2-ct1-LR5E-5-MINLR0.5E-5-WD0.1-WARMUP1000-nnodes1 1600 0713tanuki-8b-iter126000-plus-test-clean-iter1600

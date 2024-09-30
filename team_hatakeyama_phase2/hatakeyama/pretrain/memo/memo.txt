@@ -1,0 +1,164 @@
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i
+
+find /var/tmp -maxdepth 1 -user ext_kan_hatakeyama_s_gmail_com -print0 | xargs -0 rm -rf
+
+#自動job
+cd /storage5/llm/codes/2_pretrain/
+
+#gpt2
+#sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node.sh
+
+#gpt2 0429
+sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_gpt2.sh
+
+#llama2
+sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama.sh
+
+#llama2 0506
+sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama_0506_inc_lr_step23800.sh
+
+#llama2 0508 lr戻す
+sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama.sh
+
+#llama 0508 再び上げる
+sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama_0506_inc_lr_step23800.sh
+
+#llama 0507keizoku
+#sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama_0507_restart_shuffle.sh
+
+#llama 0508 keizoku2
+#sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama_0507_restart_shuffle2.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama_0508_restart_shuffle.sh
+
+#llama 0513 2 epoch目｡ lrをcosine, データをシャッフル
+sbatch --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 3_train_multi_node_llama_0506_inc_lr_step23800.sh
+
+# -c 208 確保できるが､メンテ用に8くらいは取っておくと良い
+srun --nodelist=slurm0-a3-ghpc-[12-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[13-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[12-13] --gpus-per-node=8 --time=30-00:00:00 -c 200 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[12] --gpus-per-node=8 --time=30-00:00:00 -c 200 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[13] --gpus-per-node=8 --time=30-00:00:00 -c 200 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[14] --gpus-per-node=8 --time=30-00:00:00 -c 200 --pty bash -i 
+
+pkill python
+pkill wandb
+nvidia-smi
+
+sudo fuser -v /dev/nvidia*
+
+sbatch --nodelist=slurm0-a3-ghpc-[13-14] --gpus-per-node=8 --time=30-00:00:00 -c 200 multinode_run.sh
+
+#メンテ
+srun --nodelist=slurm0-a3-ghpc-[12] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[13] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i 
+srun --nodelist=slurm0-a3-ghpc-[14] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i 
+
+#activate
+cd /storage5/llm/codes/2_pretrain/
+source ~/miniconda3/etc/profile.d/conda.sh && conda activate .venv_train
+
+#jobs
+nohup bash 0_train_node1_7b_no_rope_master_BTM.sh > 7b_master_no_rope.log  &
+nohup bash 01_train_node1_7b_no_rope_J_BTM.sh > 7b_J_no_rope.log  &
+
+bash 3_train_multi_node.sh 
+
+nohup bash 3_train_multi_node.sh &
+
+bash 3_train_node1.sh 
+
+ssh slurm0-a3-ghpc-13
+sudo pkill python
+sudo pkill wandb
+sudo fuser -v /dev/nvidia*
+
+ssh slurm0-a3-ghpc-14
+sudo fuser -v /dev/nvidia*
+
+
+----
+
+transformer engineの入れ方メモ
+python3.9だと､transformerengineをbuildするときにエラーがでた
+python3.11で環境構築をし直した
+
+node確保のときに､cは大きめ(>200)
+conda install -c conda-forge cudnn=8.4.1 -y 
+pip install git+https://github.com/NVIDIA/TransformerEngine.git@stable
+
+#conda uninstall cudatoolkit # cuda-toolkitが既に入ってるので､消す →消すと学習などでライブラリエラーが出る
+
+llm/codes/2_pretrain/Megatron-DeepSpeed/megatron/training.py
+をいじる
+
+376行目付近､ assertionでひっかかるので､hackする
+    args.allow_transformer_engine = True
+    #args.allow_transformer_engine = all([type(m) == GPTModel for m in model])
+ 
+
+
+#ファイルコピー 遅すぎて使い物にならなかった｡200kb/s程度
+cd /storage5/split/btm_ja
+rsync -avz --info=progress2 Igarashi-gpuserver-presto2020:/data/hatakeyama/python/llm_corpus/BTM_J_corpus_text_document/split split
+
+
+export PATH=/home/ext_kan_hatakeyama_s_gmail_com/miniconda3/envs/.venv_train2/bin:$PATH
+export PATH=/home/ext_kan_hatakeyama_s_gmail_com/miniconda3/envs/.cuda12/bin:$PATH
+
+
+export PATH=/home/ext_kan_hatakeyama_s_gmail_com/miniconda3/envs/llmeval/bin:$PATH
+
+#######
+#backup
+cd backup/scripts
+#local
+srun --nodelist=slurm0-a3-ghpc-[12] --gpus-per-node=0 --time=30-00:00:00 -c 8 \
+cp -r /storage5/checkpoints/0501llama/checkpoint/gpt_8B_tok300B_lr2e-05_min2e-06_w2000M_d193B_cosine_gbs1536_mbs3_g24_z1_pp3_seed1234_rebase/global_step30800 \
+/storage5/backup/0506llama/30800
+
+#hf
+srun --nodelist=slurm0-a3-ghpc-[12] --gpus-per-node=0 --time=30-00:00:00 -c 8 \
+python temp_model_upload.py
+
+#gcp
+srun --nodelist=slurm0-a3-ghpc-[12] --gpus-per-node=0 --time=30-00:00:00 -c 8 bash gcp_upload.sh
+
+#-conversion memory
+
+#deepspeed to megatron LM  (mp rankファイルと､model statesが必要)
+#python Megatron-DeepSpeed/tools/convert_checkpoint/deepspeed_to_megatron.py --input_folder ../../models/llama/step123/ --output_folder ../../models/llama/conv
+#python megatron_to_llama.py --llama_checkpoint_path ../../models/llama/step123/ --pytorch_dump_folder_path ../../models/llama/  --pretraining_tp 1 --llama_config_file llama3.config 
+
+#tokenizer
+python convert_tokenizer_from_sentencepiece_to_huggingface_transformers.py     --input_tokenizer_file ../../models/tokenizers/0502llama/tokenizer_scale200.model --output_tokenizer_dir ../../models/llama/hf/
+
+#conv kawagoshi
+python Megatron-DeepSpeed/tools/convert_checkpoint/ds_to_universal.py --input_folder /storage5/checkpoints/0501llama/checkpoint/gpt
+_8B_tok300B_lr2e-05_min2e-06_w2000M_d193B_cosine_gbs1536_mbs3_g24_z1_pp3_seed1234_rebase/global_step6300 --output_folder /storage5/checkpoints/hf/test
+
+
+#うまくいったルート
+# 川越 conv うまくいったkaも by local
+#tokenizer
+python convert_tokenizer_from_sentencepiece_to_huggingface_transformers.py     --input_tokenizer_file ../../models/tokenizers/0502llama/tokenizer_scale200.model --output_tokenizer_dir ../../models/llama/hf/
+#deepspeed to megatron
+python Megatron-DeepSpeed/tools/convert_checkpoint/deepspeed_to_megatron.py --input_folder ../../models/llama/step123/ --output_folder ../../models/llama/conv
+#megatron to huggingface
+python llama_checkpoint_conversion.py --load_path ../../models/llama/conv/ --save_path ../../models/llama/conv_hf --model_name test --convert_checkpoint_from_megatron_to_transformers --model_name Llama2
+
+
+#ft
+cd EvalPractice/3_finetune/
+sbatch --nodelist=slurm0-a3-ghpc-[12] --gpus-per-node=8 --time=30-00:00:00 -c 200 run.sh 0515_ft.py data/0515data 0515
+sbatch --nodelist=slurm0-a3-ghpc-[13] --gpus-per-node=8 --time=30-00:00:00 -c 200 run.sh 0515_ft.py data/0515data 0515
+sbatch --nodelist=slurm0-a3-ghpc-[14] --gpus-per-node=8 --time=30-00:00:00 -c 200 run.sh 0515_ft.py data/0515data 0515
+
+
+#upload 
+python upload.py --output_tokenizer_and_model_dir \
+/storage5/EvalPractice/model/2_0524with_halcination_little_codes_-storage5-llm-models-hf-step62160_fin_inst_0524with_halcination_little_codes-inst_parquet_lr_5e-5/checkpoint-2400 \
+--huggingface_name \
+0524with_halcination_little_codes_step1600
+
+export HF_HOME=/storage5/hf

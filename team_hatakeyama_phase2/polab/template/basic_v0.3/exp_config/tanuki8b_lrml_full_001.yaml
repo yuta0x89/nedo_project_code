@@ -1,0 +1,55 @@
+data:
+  - name: hatakeyama-llm-team/dpo_data_for_tanuki
+    preprocess:
+      template: null
+      data_format: trl
+    split:
+      train: train
+      eval: test
+  - name: team-hatakeyama-phase2/hh-rlhf-calm3
+    preprocess:
+      template: Alpaca
+      data_format: OpenAI_messages
+      keys:
+        messages: conversations
+        chosen: chosen
+        rejected: rejected
+    split:
+      train: train
+
+model:
+  name: /storage5/someya/outputs/sftlab-experiments/8B_iter126000/someya-exp002-zero1/checkpoint-5000
+
+exp_params:
+  num_train_epochs: 2
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 32
+  #dataloader_num_workers: 24
+  save_strategy: epoch
+  save_steps: 1000
+  logging_steps: 1
+  learning_rate: 5e-7
+  warmup_ratio: 0.1
+  lr_scheduler_type: cosine
+  weight_decay: 0.0
+  optim: adamw_torch
+  dtype: bf16
+  use_fast: true
+  gradient_checkpointing: false
+  max_length: 1150
+  max_prompt_length: 925
+  loss_type: lrml # loss for DiscoPOP
+  beta: 0.1
+  use_peft: false
+  peft_target_model: llama-all
+  use_flash_attention_2: true
+  peft_lora_r: 128
+  peft_lora_alpha: 256
+  peft_lora_dropout: 0.05
+  ropo_alpha: 0.2 #weight of ropo loss for ROPO.
+  ropo_gamma: 0.1 #weight of dpo loss for ROPO.
+  
+  do_eval: true
+  eval_strategy: steps
+  eval_steps: 50

@@ -1,0 +1,20 @@
+base_model: /storage5/shared/Llama-3-8/HF/cont_0120000
+gate_mode: random
+dtype: bfloat16
+experts:
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0120000
+    positive_prompts:
+      - hello
+    noise_scale: 0.05
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0120000
+    positive_prompts:
+      - hello
+    noise_scale: 0.05
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0120000
+    positive_prompts:
+      - hello
+    noise_scale: 0.05
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0120000
+    positive_prompts:
+      - hello
+    noise_scale: 0.05

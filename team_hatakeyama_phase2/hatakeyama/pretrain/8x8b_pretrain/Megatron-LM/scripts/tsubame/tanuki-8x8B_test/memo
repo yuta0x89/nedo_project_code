@@ -1,0 +1,5 @@
+bash /storage5/Megatron-LM/scripts/tsubame/tanuki-8x8B/stop_sy.sh slurm0-a3-ghpc-15 stop
+
+pip install python-dotenv
+conda install zarr
+pip install git+https://github.com/fanshiqing/grouped_gemm@main

@@ -1,0 +1,3 @@
+cd /storage5/Megatron-LM/scripts/tsubame/moe_test_hatakeyama/4nodes
+sbatch --nodelist=slurm0-a3-ghpc-[1-2,6,15] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x11b.sh
+

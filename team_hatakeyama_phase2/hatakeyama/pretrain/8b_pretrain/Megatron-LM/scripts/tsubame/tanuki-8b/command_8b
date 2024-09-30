@@ -1,0 +1,56 @@
+cd /storage5/shared/hatakeyama/0611te/Megatron-LM/scripts/tsubame/tanuki-8b
+
+
+sbatch --nodelist=slurm0-a3-ghpc-[6,15] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0627_2node_.sh
+
+
+srun --nodelist=slurm0-a3-ghpc-[6] --gpus-per-node=1 --time=30-00:00:00 -c 32 --pty bash -i 
+
+
+#0627start
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0627_16node.sh
+
+#0628速度最適化
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0628_16node_opt_flops.sh
+
+#0628 restart from 0628. microbatchを1 to 2
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0628_16node_restart_from_0628.sh
+
+
+#0701 lrを二倍､ ppを4 to 2 (load arg checkpointをoff)
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0701_16node_inc_lr_and_fix_pp.sh
+
+#resume, checkpoint間隔をふやす
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0701_16node_inc_lr_and_fix_pp_resume.sh
+
+#0702 checkpointからのresume
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0702_16node_inc_lr_and_fix_pp_resume.sh
+
+#0703 さらにlrを上げる
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0703_16node_inc_lr_and_fix_pp_inc_lr.sh
+
+#0704 lrを3e-4のllamaまであげる
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0704_16node_inc_lr_and_fix_pp_inc_lr_3e-4.sh
+
+#0707 lr=3e-4はspikeしたので、1.5e-4に戻す(1.5e-4のckから再開)
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0707_16node_inc_lr_and_fix_pp_inc_lr_resume_1p5e-4.sh
+
+
+#0712 きれいなデータで継続学習 1 node
+sbatch --nodelist=slurm0-a3-ghpc-[2] --gpus-per-node=8 --time=30-00:00:00 -c 200 0712_cleaned_data.sh 0
+
+
+#0719 synth data 16 nodes
+
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0719_synth_train.sh
+
+#0730 synth data 16 nodes 英語中心
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0729_synth_train.sh
+
+#0730_2 synth data 16 nodes最後の会話系
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0730_synth_train_step2.sh
+
+
+#0805 追加の合成データもろもろ｡ 0730は0.5 epochくらいしか回せてないのもあったので､それも含めた
+sbatch --nodelist=slurm0-a3-ghpc-[2-5,8-16,18-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run0805_synth_train.sh
+

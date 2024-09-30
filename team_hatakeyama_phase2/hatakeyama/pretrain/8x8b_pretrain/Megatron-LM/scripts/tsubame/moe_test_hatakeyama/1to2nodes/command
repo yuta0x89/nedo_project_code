@@ -1,0 +1,11 @@
+cd /storage5/Megatron-LM/scripts/tsubame/moe_test_hatakeyama/1to2nodes
+sbatch --nodelist=slurm0-a3-ghpc-[1-2] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x8b.sh
+
+sbatch --nodelist=slurm0-a3-ghpc-[0-1] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x8b_wo_zloss.sh
+
+#best fit
+sbatch --nodelist=slurm0-a3-ghpc-[1-2] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x8b_wo_zloss_bestfit.sh
+
+
+sbatch --nodelist=slurm0-a3-ghpc-[0-1] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_4x11b.sh
+sbatch --nodelist=slurm0-a3-ghpc-[0-1] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_8x8b.sh

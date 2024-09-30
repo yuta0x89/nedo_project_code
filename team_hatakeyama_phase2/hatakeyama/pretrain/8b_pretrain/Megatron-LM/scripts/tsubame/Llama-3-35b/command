@@ -1,0 +1,77 @@
+#学習実行
+#srun --nodelist=slurm0-a3-ghpc-[3-18] --gpus-per-node=8 --time=30-00:00:00 -c 128 --pty bash -i 
+cd /storage5/shared/hatakeyama/0611te/Megatron-LM/scripts/tsubame/Llama-3-35b/
+#bash _run_multi_16.sh
+
+#16ノードのプロセスの一括kill 
+sbatch --nodelist=slurm0-a3-ghpc-[4] --gpus-per-node=0 --time=30-00:00:00 -c 1 pkill_python_16nodes.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[4] --gpus-per-node=0 --time=30-00:00:00 -c 1 pkill_python_node_3-20.sh
+
+#16ノードのnvidia check
+bash nvidia-check.sh
+
+#16ノード立ち上げ
+#sbatch --nodelist=slurm0-a3-ghpc-[3-18] --gpus-per-node=8 --time=30-00:00:00 --mem=1000GB -c 128 _run_multi_16_batch.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[3-18] --gpus-per-node=8 --time=30-00:00:00 --mem=1000GB -c 128 _run_multi_16_pp4_tp4_batch.sh
+
+#0617 16 node 共用env
+sbatch --nodelist=slurm0-a3-ghpc-[3-18] --gpus-per-node=8 --time=30-00:00:00 --mem=1000GB -c 128 _run_multi_16_pp4_tp4_batch_shared.sh
+
+#0621 loss spikeを抑えた条件で立ち上げ　
+#sbatch --nodelist=slurm0-a3-ghpc-[3-18] --gpus-per-node=8 --time=30-00:00:00 --mem=1000GB -c 128 _run_multi_16_pp4_tp4_batch_shared_suppress_spike0621.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[3-10,12-19] --gpus-per-node=8 --time=30-00:00:00 --mem=1000GB -c 128 _run_multi_16_pp4_tp4_batch_shared_suppress_spike0621_ch_node.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[4-10,12-20] --gpus-per-node=8 --time=30-00:00:00 --mem=1000GB -c 128 _run_multi_16_pp4_tp4_batch_shared_suppress_spike0621_ch_node.sh
+
+#0621 loss spikeを抑え、2nd tonyuを入れて立ち上げ
+#sbatch --nodelist=slurm0-a3-ghpc-[4-10,12-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_batch_shared_suppress_spike0621_2nd_dataset.sh
+
+#0623 megatronのpathをshared/jkに修正して立ち上げ
+#sbatch --nodelist=slurm0-a3-ghpc-[4-10,12-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_batch_shared_env_suppress_spike_2nd_dataset_restart0626.sh
+
+#0623-2 lrを7.5e-6, grad_clipを0.05
+sbatch --nodelist=slurm0-a3-ghpc-[4-10,12-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_batch_shared_env_suppress_spike_2nd_dataset_restart_low_lr_0623_2.sh
+sbatch --nodelist=slurm0-a3-ghpc-[3-10,12-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_batch_shared_env_suppress_spike_2nd_dataset_restart_low_lr_0623_2.sh
+
+#0625
+sbatch --nodelist=slurm0-a3-ghpc-[4-10,12-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_2nd_dataset_restart_0625.sh
+
+#0626  TRAIN_STEPS=110000など、の修正を加えて、loaderをresetして開始
+#https://www.notion.so/matsuolab-geniac/6-26data_loader-ec9a7bcd94ac4df7b9fd5047f5e7d881
+
+#sbatch --nodelist=slurm0-a3-ghpc-[4-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_2nd_dataset_rerestart_0626.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_2nd_dataset_rerestart_0626.sh
+#sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_2nd_dataset_rerestart_inc_lr_0626_2.sh
+
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_2nd_dataset_rerestart_change_batch_0626_3.sh
+
+#0627 apply q k layer scalingを追加
+sbatch --nodelist=slurm0-a3-ghpc-[3-5,7-14,16-20] --gpus-per-node=8 --time=30-00:00:00 -c 200 _run_multi_16_pp4_tp4_2nd_dataset_scaling_0627.sh
+
+#---------------
+#2node
+sbatch --nodelist=slurm0-a3-ghpc-[0-1] --gpus-per-node=8 --time=30-00:00:00 --mem=500GB -c 64 _run_multi_2.sh
+
+
+#18ノード立ち上げ
+#sbatch --nodelist=slurm0-a3-ghpc-[3-20] --gpus-per-node=8 --time=30-00:00:00 -c 128 _run_multi_18.sh
+
+#interactive 18 nodes
+srun --nodelist=slurm0-a3-ghpc-[3-20] --gpus-per-node=8 --time=30-00:00:00 -c 128 --pty bash -i 
+
+#interactive 16 nodes
+srun --nodelist=slurm0-a3-ghpc-[3-18] --gpus-per-node=8 --time=30-00:00:00 -c 128 --pty bash -i 
+
+
+srun --nodelist=slurm0-a3-ghpc-[19-20] --gpus-per-node=8 --time=30-00:00:00 -c 128 --pty bash -i 
+
+
+#16 node kill
+sbatch --nodelist=slurm0-a3-ghpc-[3] --gpus-per-node=0 --time=30-00:00:00 -c 1 pkill_python_node_3-18.sh
+
+
+#メンテ
+srun --nodelist=slurm0-a3-ghpc-[3] --gpus-per-node=8 --time=30-00:00:00 -c 128 --pty bash -i 
+
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 --time=30-00:00:00 -c 1 --pty bash -i 
+
+srun --nodelist=slurm0-a3-ghpc-[18] --gpus-per-node=0 --time=30-00:00:00 -c 1 --pty bash -i 
