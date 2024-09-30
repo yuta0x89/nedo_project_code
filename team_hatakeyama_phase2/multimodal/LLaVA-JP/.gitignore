@@ -1,7 +1,0 @@
-__pycache__
-output_llava/
-wandb
-cache
-sbatch_logs
-.ipynb_checkpoints
-llavajp.egg-info
