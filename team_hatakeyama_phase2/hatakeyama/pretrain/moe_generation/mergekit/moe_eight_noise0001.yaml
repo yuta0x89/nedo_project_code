@@ -1,0 +1,36 @@
+base_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+gate_mode: random
+dtype: bfloat16
+experts:
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001
+  - source_model: /storage5/shared/Llama-3-8/HF/cont_0126000_lr1_5e_m4
+    positive_prompts:
+      - hello
+    noise_scale: 0.001

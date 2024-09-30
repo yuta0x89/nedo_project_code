@@ -1,0 +1,90 @@
+# 立ち上げコマンドの例
+cd /storage5/shared/corpus/synthetic/SyntheticTexts/
+
+sbatch --nodelist=slurm0-a3-ghpc-[1] --gpus-per-node=1 --time=05:00:00 -c 8 0715_ca_auto_instruct.sh
+
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=05:00:00 -c 8 0618cc_tanuki_f1_gen_stop.sh
+sbatch --nodelist=slurm0-a3-ghpc-[20] --gpus-per-node=1 --time=6:30:00 -c 8 0618cc_tanuki_f1_gen_stop.sh
+
+sbatch --nodelist=slurm0-a3-ghpc-[2] --gpus-per-node=1 --time=5:30:00 -c 8 --begin=now+2hours 0618cc_tanuki_f1_gen_stop.sh
+sbatch --nodelist=slurm0-a3-ghpc-[2] --gpus-per-node=1 --time=5:30:00 -c 8 --begin=now+150minutes 0618cc_tanuki_f1_gen_stop.sh
+
+
+
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=03:00:00 -c 8 0618cc_tanuki_f1_gen_stop.sh
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=03:00:00 -c 8 --begin=now+3hours 0618cc_tanuki_f1_gen_stop.sh
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=03:00:00 -c 8 --begin=now+6hours 0618cc_tanuki_f1_gen_stop.sh
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=03:00:00 -c 8 --begin=now+9hours 0618cc_tanuki_f1_gen_stop.sh
+
+sbatch --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=1 --time=10:00:00 -c 8 --begin=now+12hours 0618cc_tanuki_f1_gen_stop.sh
+
+#interactive
+srun --nodelist=slurm0-a3-ghpc-[0] --gpus-per-node=0 --time=30-00:00:00 -c 8 --pty bash -i 
+############
+###
+#自動投入
+
+cd /storage5/shared/corpus/synthetic/SyntheticTexts/
+for node in 0 1 2 6 15; do
+  for i in {1..8}; do
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 0618cc_tanuki_f1_gen_stop.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --begin=now+4hours 0618cc_tanuki_f1_gen_stop.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --begin=now+8hours 0618cc_tanuki_f1_gen_stop.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --begin=now+12hours 0618cc_tanuki_f1_gen_stop.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --begin=now+16hours 0618cc_tanuki_f1_gen_stop.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --begin=now+20hours 0618cc_tanuki_f1_gen_stop.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --begin=now+24hours 0618cc_tanuki_f1_gen_stop.sh
+  done
+done
+
+
+##########################
+#ゴミ  queueの削除
+squeue -u $USER > job_list.txt
+
+# ReqNodeNotAvailエラーのジョブIDを抽出してキャンセル
+grep "ReqNodeNotAvail" job_list.txt | awk '{print $1}' | while read job_id; do
+  scancel $job_id
+  echo "Cancelled job ID: $job_id"
+done
+
+# reqnodenotavailエラーのジョブidを抽出してキャンセル
+grep "launch failed requeued held" job_list.txt | awk '{print $1}' | while read job_id; do
+  scancel $job_id
+  echo "cancelled job id: $job_id"
+done
+grep "BeginTime" job_list.txt | awk '{print $1}' | while read job_id; do
+  scancel $job_id
+  echo "cancelled job id: $job_id"
+done
+
+rm job_list.txt
+
+
+##################################
+#自動投入ca
+
+cd /storage5/shared/corpus/synthetic/SyntheticTexts/
+#for node in {0..20}; do
+for node in 0 1 6 7 17; do
+  for i in {1..8}; do
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB 0705cc_tanuki_ca.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB --begin=now+4hours 0705cc_tanuki_ca.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB --begin=now+8hours 0705cc_tanuki_ca.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB --begin=now+12hours 0705cc_tanuki_ca.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB --begin=now+16hours 0705cc_tanuki_ca.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB --begin=now+20hours 0705cc_tanuki_ca.sh
+    sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=1 --time=04:00:00 -c 8 --mem=100GB --begin=now+24hours 0705cc_tanuki_ca.sh
+  done
+done
+
+#sft
+
+#cd /storage5/shared/corpus/synthetic/SyntheticTexts/
+#node=7
+#sbatch --nodelist=slurm0-a3-ghpc-[$node] --gpus-per-node=4 --time=04:00:00 -c 8 --mem=100GB 0705cc_tanuki_ca.sh
+
+
+#srun --nodelist=slurm0-a3-ghpc-[7] --gpus-per-node=4 --time=30-00:00:00 -c 32 --pty bash -i 

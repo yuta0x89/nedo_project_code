@@ -1,0 +1,38 @@
+#
+srun --nodelist=slurm0-a3-ghpc-[3] --gpus-per-node=0 --time=30-00:00:00 -c 4 --pty bash -i 
+# Set environment variable to skip downloading large files during clone
+export GIT_LFS_SKIP_SMUDGE=1
+
+# Clone repositories without downloading large files
+git clone https://huggingface.co/datasets/kanhatakeyama/SyntheticText
+git clone https://huggingface.co/datasets/kanhatakeyama/SyntheticTextOpenMathInstruct
+git clone https://huggingface.co/datasets/kanhatakeyama/Sansu
+git clone https://huggingface.co/datasets/kanhatakeyama/SyntheticTextWikiTranslate
+git clone https://huggingface.co/datasets/kanhatakeyama/SyntheticTextCCUncleaned
+
+# Download and checkout large files for each repository
+cd SyntheticText
+git lfs pull
+git lfs checkout
+cd ..
+
+cd SyntheticTextOpenMathInstruct
+git lfs pull
+git lfs checkout
+cd ..
+
+cd Sansu
+git lfs pull
+git lfs checkout
+cd ..
+
+cd SyntheticTextWikiTranslate
+git lfs pull
+git lfs checkout
+cd ..
+
+cd SyntheticTextCCUncleaned/
+git lfs pull
+git lfs checkout
+cd ..
+

@@ -1,0 +1,30 @@
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+             30039        a3 0618cc_t ext_kan_ PD       0:00      1 (Resources)
+             30046        a3 0618cc_t ext_kan_ PD       0:00      1 (Resources)
+             30053        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30060        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30067        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30074        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30081        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30088        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30095        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30102        a3 0618cc_t ext_kan_ PD       0:00      1 (Resources)
+             30109        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30116        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30123        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30130        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30137        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30144        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             30151        a3 0618cc_t ext_kan_ PD       0:00      1 (ReqNodeNotAvail, May be reserved for other job)
+             29990        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             29997        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             30004        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             30011        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             30018        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             30025        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             30032        a3 0618cc_t ext_kan_  R      30:02      1 slurm0-a3-ghpc-0
+             30128        a3 0618cc_t ext_kan_  R    3:42:56      1 slurm0-a3-ghpc-2
+             30129        a3 0618cc_t ext_kan_  R    3:42:56      1 slurm0-a3-ghpc-2
+             30135        a3 0618cc_t ext_kan_  R    3:42:56      1 slurm0-a3-ghpc-2
+             30136        a3 0618cc_t ext_kan_  R    3:42:56      1 slurm0-a3-ghpc-2
+             30507        a3 _run_mul ext_kan_  R      22:23     16 slurm0-a3-ghpc-[3-5,7-14,16-20]
