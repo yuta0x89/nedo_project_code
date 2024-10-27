@@ -177,7 +177,7 @@ def _set_wandb_writer(args):
 
         now = datetime.now()
         now = now.strftime("%Y-%m-%d-%H-%M-%S")
-        exp_name = args.wandb_name + "-" + now + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank)
+        exp_name = args.wandb_name + "-" + now + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank) + "_" + str(args.rank)
 
         wandb_kwargs = {
             'entity': args.wandb_entity,

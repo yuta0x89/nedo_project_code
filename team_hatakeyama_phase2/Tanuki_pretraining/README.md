@@ -1,5 +1,4 @@
 # Tanuki_pretraining
-
 ```
 Tanuki_pretraining
     |
@@ -35,6 +34,16 @@ Tanuki_pretraining
         全体に悪影響を及ぼす可能性があります。
         その場合、make_env.sh　の中のコマンドを参考にして、環境を構築してください。
 ```
+aaddadadadamama,aa,,,,,saawwaa,,,<,,,,,,sssaa
+
+
+```
+ubuntu 20 dadaassadada
+git clone https://github.com/matsuolab/nedo_project_code.git
+git checkout team_hatakeyama_phase2 
+cd team_hatakeyama_phase2/Tanuki_pretraining/
+sudo chmod +x ./make_env.sh 
+
 
 ```bash
 $ git clone https://github.com/team-hatakeyama-phase2/Tanuki_pretraining.git
