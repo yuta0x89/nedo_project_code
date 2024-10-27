@@ -43,12 +43,7 @@ git clone https://github.com/matsuolab/nedo_project_code.git
 git checkout team_hatakeyama_phase2 
 cd team_hatakeyama_phase2/Tanuki_pretraining/
 sudo chmod +x ./make_env.sh 
-
-
-```bash
-$ git clone https://github.com/team-hatakeyama-phase2/Tanuki_pretraining.git
-$ cd Tanuki_pretraining
-$ make_env.sh
+./make_env.sh
 ## ---- import OK ----- が表示される
 ```
 
