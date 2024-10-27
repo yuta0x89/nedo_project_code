@@ -34,8 +34,8 @@ Tanuki_pretraining
         全体に悪影響を及ぼす可能性があります。
         その場合、make_env.sh　の中のコマンドを参考にして、環境を構築してください。
 ```
-aaddadadadamama,aa,,,,,saawwaa,,,<,,,,,,sssaa
 
+nvidia-driverがない場合は、nvidia-driver-535をインストールする。 メモリを50GB程度使うので、64GB以下のマシンはスワップメモリを確保する。
 
 ```
 git clone -b team_hatakeyama_phase2 https://github.com/matsuolab/nedo_project_code.git
